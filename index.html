@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parivesh 3.0</title>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      color: #333;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Background */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+    }
+
+    .background::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://images.unsplash.com/photo-1683221704109-acdeb0883037?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmVlbiUyMGZvcmVzdCUyMG1vdW50YWlucyUyMGVudmlyb25tZW50JTIwbmF0dXJlfGVufDF8fHx8MTc3MzQ0MDk2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      opacity: 0.3;
+    }
+
+    .background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(30, 60, 114, 0.8) 0%, rgba(46, 125, 50, 0.6) 100%);
+    }
+
+    /* Floating Leaves Animation */
+    .floating-leaves {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .leaf {
+      position: absolute;
+      top: -50px;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+      }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar.scrolled {
+      background: rgba(30, 60, 114, 0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .navbar .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .navbar .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .navbar .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      padding: 3rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    /* Section Styles */
+    section {
+      padding: 5rem 5%;
+      position: relative;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 3rem;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 4rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Workflow Section */
+    .workflow-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .workflow-step {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 2rem;
+      width: 250px;
+      text-align: center;
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .workflow-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .workflow-step:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 40px rgba(76, 175, 80, 0.3);
+      border-color: rgba(76, 175, 80, 0.5);
+    }
+
+    .workflow-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .workflow-step h3 {
+      color: #fff;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .workflow-step p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .workflow-arrow {
+      font-size: 3rem;
+      color: rgba(76, 175, 80, 0.7);
+      display: inline-flex;
+      align-items: center;
+      animation: arrowPulse 2s infinite;
+    }
+
+    @keyframes arrowPulse {
+      0%, 100% { transform: translateX(0); opacity: 0.7; }
+      50% { transform: translateX(10px); opacity: 1; }
+    }
+
+    /* About Section */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 2.5rem;
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: scale(0.9);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 15px 50px rgba(76, 175, 80, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-card h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    /* Footer */
+    .footer {
+      background: rgba(30, 60, 114, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 3rem 5%;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      color: #fff;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.8;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section a:hover {
+      color: #4caf50;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .sustainability-message {
+      font-size: 1.1rem;
+      color: #4caf50;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .navbar .nav-links {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .workflow-step {
+        width: 100%;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background"></div>
+  <div class="floating-leaves"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">
+      🌍 Parivesh 3.0
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="auth.html">Login/Register</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="application&scrutiny.html">scrutiny</a></li>
+      <li><a href="mom.html">MoM</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <a href="track.html" class="btn
+      btn-primary">Track Application</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <div class="hero-icon">🌱</div>
+      <h1>Environmental Clearance Workflow System</h1>
+      <p>
+        A comprehensive digital platform enabling industries to submit environmental clearance applications seamlessly. 
+        Our system streamlines document verification, scrutiny processes, deficiency corrections, meeting scheduling, 
+        and final approvals - all in one unified portal.
+      </p>
+    </div>
+  </section>
+
+  <!-- Workflow Section -->
+  <section id="workflow">
+    <h2 class="section-title">Environmental Clearance Workflow</h2>
+    <p class="section-subtitle">
+      Our streamlined digital process ensures transparency, efficiency, and accountability at every step
+    </p>
+    <div class="workflow-container">
+      <div class="workflow-step">
+        <div class="workflow-icon">📝</div>
+        <h3>Application Submission</h3>
+        <p>Industries submit detailed environmental clearance applications with project information</p>
+      </div>
+
+      <span class="workflow-arrow">→</span>
+
+      <div class="workflow-step">
+        <div class="workflow-icon">📎</div>
+        <h3>Document Upload</h3>
+        <p>Upload required documents including EIA reports, project plans, and environmental assessments</p>
+      </div>
+
+      <span class="workflow-arrow">→</span>
+
+      <div class="workflow-step">
+        <div class="workflow-icon">🔍</div>
+        <h3>Scrutiny Verification</h3>
+        <p>Expert panel reviews and verifies submitted documents for completeness and compliance</p>
+      </div>
+
+      <span class="workflow-arrow">→</span>
+
+      <div class="workflow-step">
+        <div class="workflow-icon">⚠️</div>
+        <h3>Deficiency Correction</h3>
+        <p>Applicants address identified gaps and resubmit corrected documentation</p>
+      </div>
+
+      <span class="workflow-arrow">→</span>
+
+      <div class="workflow-step">
+        <div class="workflow-icon">📅</div>
+        <h3>Meeting Scheduling</h3>
+        <p>Expert committee meetings scheduled for project evaluation and discussion</p>
+      </div>
+
+      <span class="workflow-arrow">→</span>
+
+      <div class="workflow-step">
+        <div class="workflow-icon">✅</div>
+        <h3>Final Approval</h3>
+        <p>Decision communicated with detailed conditions and compliance requirements</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <h2 class="section-title">About Environmental Clearance Process</h2>
+    <p class="section-subtitle">
+      Environmental clearance is a mandatory requirement for projects that may impact the environment. 
+      Our portal digitizes the entire workflow, making it transparent, efficient, and accessible.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌳</div>
+        <h3>Environmental Impact Assessment</h3>
+        <p>
+          Comprehensive evaluation of potential environmental impacts before project approval. 
+          Our system ensures thorough assessment of ecological, social, and environmental factors.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💻</div>
+        <h3>Digital Workflow Management</h3>
+        <p>
+          End-to-end digitization of the clearance process from application submission to final approval. 
+          Track your application status in real-time with complete transparency.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Document Verification</h3>
+        <p>
+          Automated and expert-led verification of submitted documents. Instant notifications for 
+          deficiencies with clear guidelines for corrections.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Expert Committee Review</h3>
+        <p>
+          Scheduled expert panel meetings with transparent decision-making processes. 
+          Minutes of meetings (MoM) are documented and accessible to stakeholders.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <h3>Real-time Notifications</h3>
+        <p>
+          Automated alerts for application status updates, meeting schedules, and required actions. 
+          Stay informed at every step of the process.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Compliance Monitoring</h3>
+        <p>
+          Post-approval monitoring and compliance tracking to ensure environmental conditions 
+          are met throughout the project lifecycle.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Section Preview -->
+  <section id="dashboard">
+    <h2 class="section-title">User Dashboard</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Application Status</h3>
+        <p>View real-time status of all your submitted applications with detailed progress tracking</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Document Repository</h3>
+        <p>Access all uploaded documents, reports, and correspondence in one secure location</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <h3>Notifications Center</h3>
+        <p>Stay updated with important alerts, deadlines, and action items</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Review Section -->
+  <section id="review">
+    <h2 class="section-title">Application Review & Scrutiny</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔎</div>
+        <h3>Detailed Scrutiny</h3>
+        <p>Comprehensive review of environmental impact assessments and project documentation</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Quick Processing</h3>
+        <p>Streamlined review process with automated checks and expert panel evaluations</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Deficiency Management</h3>
+        <p>Clear communication of deficiencies with guidelines for timely corrections</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MoM Section -->
+  <section id="mom">
+    <h2 class="section-title">Minutes of Meeting & Decisions</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Meeting Records</h3>
+        <p>Complete documentation of expert committee meetings and deliberations</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚖️</div>
+        <h3>Decision Transparency</h3>
+        <p>Access to decision rationale, conditions, and compliance requirements</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📜</div>
+        <h3>Audit Trail</h3>
+        <p>Complete history of all decisions and actions for accountability and transparency</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>🌍 Environmental Clearance Portal</h3>
+        <p>
+          A government initiative to streamline environmental clearance processes 
+          and promote sustainable development.
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <a href="#home">Home</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#about">About</a>
+        <a href="#dashboard">Dashboard</a>
+      </div>
+
+      <div class="footer-section">
+        <h3>Contact Information</h3>
+        <p>📧 support@envportal.gov.in</p>
+        <p>📞 1800-XXX-XXXX (Toll Free)</p>
+        <p>🏢 Ministry of Environment, Forest and Climate Change</p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Resources</h3>
+        <a href="#">User Guide</a>
+        <a href="#">FAQs</a>
+        <a href="#">Regulations</a>
+        <a href="#">Support</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="sustainability-message">
+        🌱 Promoting Sustainable Development and Environmental Protection 🌱
+      </p>
+      <p style="margin-top: 1rem;">
+        © 2024 Environmental Clearance Workflow System. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Navbar background on scroll
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Workflow cards animation on scroll
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.workflow-step, .feature-card').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Create floating leaves
+    const createLeaf = () => {
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      leaf.innerHTML = '🍃';
+      leaf.style.left = Math.random() * 100 + '%';
+      leaf.style.animationDuration = (Math.random() * 5 + 10) + 's';
+      leaf.style.animationDelay = Math.random() * 5 + 's';
+      leaf.style.fontSize = (Math.random() * 20 + 20) + 'px';
+      leaf.style.opacity = (Math.random() * 0.3 + 0.2);
+      document.querySelector('.floating-leaves').appendChild(leaf);
+      
+      setTimeout(() => leaf.remove(), 15000);
+    };
+
+    // Generate leaves periodically
+    for (let i = 0; i < 15; i++) {
+      setTimeout(() => createLeaf(), i * 1000);
+    }
+    setInterval(createLeaf, 3000);
+  </script>
+</script>
+</script>
+</body>
+</html>

@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submission - Environmental Clearance System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a4d2e 0%, #1a6d4f 20%, #0f5a3d 40%, #164d35 60%, #0d3d29 80%, #0a2f1f 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Floating Leaves */
+        .leaf {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 50%, #81c784 100%);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            animation: fall linear infinite;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px rgba(76, 175, 80, 0.5));
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg) translateX(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg) translateX(150px);
+                opacity: 0.3;
+            }
+        }
+
+        /* Glowing Particles */
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #90ee90;
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+            box-shadow: 0 0 20px rgba(144, 238, 144, 0.9), 0 0 30px rgba(144, 238, 144, 0.6);
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(110vh) translateX(0) scale(0.3);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Fireflies */
+        .firefly {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffeb3b;
+            border-radius: 50%;
+            animation: firefly 8s ease-in-out infinite;
+            box-shadow: 0 0 15px #ffeb3b, 0 0 30px #fdd835;
+        }
+
+        @keyframes firefly {
+            0%, 100% {
+                transform: translate(0, 0);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translate(200px, -100px);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(100px, 50px);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translate(-150px, -50px);
+                opacity: 1;
+            }
+        }
+
+        /* Waves */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 120px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="rgba(33, 150, 243, 0.15)"></path></svg>');
+            animation: waveMove 20s linear infinite;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.15) 0%, transparent 70%);
+            animation: headerPulse 5s ease-in-out infinite;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #a8e6cf;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 1;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(168, 230, 207, 0.5); }
+            50% { text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7), 0 0 40px rgba(168, 230, 207, 0.8); }
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: #c8f5e0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+            display: block;
+            animation: iconBounce 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(76, 175, 80, 0.5);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        /* Card Title */
+        .card-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #a8e6cf;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 3px solid rgba(76, 175, 80, 0.4);
+            padding-bottom: 15px;
+        }
+
+        .card-title .icon {
+            font-size: 1.4em;
+            filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.8));
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #b2dfdb;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        label .required {
+            color: #ff6b6b;
+            margin-left: 3px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px 18px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.18);
+            border-color: #4caf50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+            transform: scale(1.02);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 3px dashed rgba(76, 175, 80, 0.5);
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #4caf50;
+            box-shadow: 0 0 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .file-upload-text {
+            color: #a5d6a7;
+            font-weight: 600;
+        }
+
+        .file-upload-icon {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 10px;
+            animation: uploadPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes uploadPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .file-name {
+            margin-top: 10px;
+            color: #81c784;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* Impact Score */
+        .impact-score-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .score-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .score-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+        }
+
+        .score-label {
+            color: #b2dfdb;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .score-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #4caf50;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+
+        .overall-risk {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(33, 150, 243, 0.2));
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 3px solid;
+            margin-top: 20px;
+            animation: riskPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes riskPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .overall-risk h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #a8e6cf;
+        }
+
+        .risk-level {
+            font-size: 2.5em;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-shadow: 0 0 25px currentColor;
+        }
+
+        /* Payment Options */
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .payment-option {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .payment-option:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #4caf50;
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+        }
+
+        .payment-option.selected {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.7);
+        }
+
+        .payment-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .payment-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #e0f2f1;
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .payment-modal-content {
+            background: linear-gradient(135deg, rgba(26, 109, 79, 0.98), rgba(15, 90, 61, 0.98));
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 600px;
+            width: 100%;
+            border: 3px solid rgba(76, 175, 80, 0.5);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
+            animation: modalSlideUp 0.4s ease;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(76, 175, 80, 0.4);
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            font-size: 2em;
+            color: #a8e6cf;
+        }
+
+        .close-btn {
+            background: rgba(244, 67, 54, 0.3);
+            border: 2px solid #f44336;
+            color: white;
+            font-size: 1.5em;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: rgba(244, 67, 54, 0.6);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* UPI Section */
+        .upi-section {
+            text-align: center;
+        }
+
+        .qr-code-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .qr-code-container img {
+            width: 250px;
+            height: 250px;
+            display: block;
+        }
+
+        .upi-id-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .upi-id-box p {
+            color: #b2dfdb;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .upi-id {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #4caf50;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: rgba(76, 175, 80, 0.3);
+            border: 2px solid #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: rgba(76, 175, 80, 0.6);
+            transform: scale(1.05);
+        }
+
+        .upload-qr-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px dashed rgba(76, 175, 80, 0.3);
+        }
+
+        .upload-qr-section h3 {
+            color: #a8e6cf;
+            margin-bottom: 15px;
+        }
+
+        /* Card Payment Section */
+        .card-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .card-form input {
+            width: 100%;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .card-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: cardShine 3s ease-in-out infinite;
+        }
+
+        @keyframes cardShine {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .card-number-display {
+            font-size: 1.5em;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: white;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-details-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .card-holder-display {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+        }
+
+        .card-expiry-display {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+            box-shadow: 0 8px 30px rgba(33, 150, 243, 0.5);
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(33, 150, 243, 0.7);
+        }
+
+        .btn-pay {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.7);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.7);
+        }
+
+        .btn:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            min-width: 350px;
+            max-width: 450px;
+            padding: 25px 30px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1em;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            z-index: 5000;
+            animation: notificationSlide 0.5s ease, notificationFadeOut 0.5s ease 4.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid;
+        }
+
+        @keyframes notificationSlide {
+            from {
+                transform: translateX(500px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes notificationFadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(500px);
+            }
+        }
+
+        .notification-success {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(56, 142, 60, 0.95));
+            border-color: #4caf50;
+        }
+
+        .notification-error {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.95), rgba(211, 47, 47, 0.95));
+            border-color: #f44336;
+        }
+
+        .notification-info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.95), rgba(25, 118, 210, 0.95));
+            border-color: #2196f3;
+        }
+
+        .notification-icon {
+            font-size: 2em;
+            animation: notificationIconPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes notificationIconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.5s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(56, 142, 60, 0.95));
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 600px;
+            border: 3px solid #4caf50;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
+            animation: modalSlideUp 0.5s ease;
+        }
+
+        .modal-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: successBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes successBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        .modal h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .modal p {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #e8f5e9;
+        }
+
+        .application-id {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin: 25px 0;
+            border: 2px solid white;
+        }
+
+        .close-modal {
+            background: white;
+            color: #4caf50;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .notification {
+                min-width: 280px;
+                right: 15px;
+                top: 15px;
+            }
+
+            .modal-content, .payment-modal-content {
+                margin: 20px;
+                padding: 30px;
+            }
+
+            .card-row {
+                grid-template-columns: 1fr;
+            }
+
+            .qr-code-container img {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation" id="bgAnimation"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="icon">🌍</span>
+            <h1>Environmental Clearance Application</h1>
+            <p>Submit Your Project for Environmental Assessment</p>
+        </div>
+
+        <!-- Project Details Section -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">📋</span>
+                Project Details
+            </h2>
+            <form id="applicationForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="projectName">Project Name <span class="required">*</span></label>
+                        <input type="text" id="projectName" placeholder="Enter project name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="industrySector">Industry Sector <span class="required">*</span></label>
+                        <input type="text" id="industrySector" placeholder="e.g., Manufacturing, Mining, Energy" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectLocation">Project Location <span class="required">*</span></label>
+                        <input type="text" id="projectLocation" placeholder="City, State" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectArea">Project Area (in hectares) <span class="required">*</span></label>
+                        <input type="number" id="projectArea" placeholder="e.g., 50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantName">Applicant Name <span class="required">*</span></label>
+                        <input type="text" id="applicantName" placeholder="Full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Contact Email <span class="required">*</span></label>
+                        <input type="email" id="contactEmail" placeholder="email@example.com" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Environmental Details Section -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">🌱</span>
+                Environmental Impact Details
+            </h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="waterUsage">Water Usage Level <span class="required">*</span></label>
+                    <select id="waterUsage" required>
+                        <option value="">Select level</option>
+                        <option value="low">Low (< 1000 L/day)</option>
+                        <option value="medium">Medium (1000-5000 L/day)</option>
+                        <option value="high">High (> 5000 L/day)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="airPollution">Air Pollution Level <span class="required">*</span></label>
+                    <select id="airPollution" required>
+                        <option value="">Select level</option>
+                        <option value="low">Low (Minimal emissions)</option>
+                        <option value="medium">Medium (Moderate emissions)</option>
+                        <option value="high">High (Heavy emissions)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="wasteGeneration">Waste Generation <span class="required">*</span></label>
+                    <select id="wasteGeneration" required>
+                        <option value="">Select level</option>
+                        <option value="low">Low (< 100 kg/day)</option>
+                        <option value="medium">Medium (100-500 kg/day)</option>
+                        <option value="high">High (> 500 kg/day)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="forestImpact">Forest Impact <span class="required">*</span></label>
+                    <select id="forestImpact" required>
+                        <option value="">Select level</option>
+                        <option value="low">Low (No deforestation)</option>
+                        <option value="medium">Medium (< 5 hectares)</option>
+                        <option value="high">High (> 5 hectares)</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="btn btn-calculate" onclick="calculateImpactScore()">
+                <span>🧮</span>
+                <span>Calculate Environmental Impact</span>
+            </button>
+        </div>
+
+        <!-- Environmental Impact Score -->
+        <div class="glass-card" id="impactScoreCard" style="display: none;">
+            <h2 class="card-title">
+                <span class="icon">📊</span>
+                Environmental Impact Assessment
+            </h2>
+            <div class="impact-score-container">
+                <div class="score-item">
+                    <div class="score-label">💨 Air Impact</div>
+                    <div class="score-value" id="airScore">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">💧 Water Usage</div>
+                    <div class="score-value" id="waterScore">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">🌳 Forest Impact</div>
+                    <div class="score-value" id="forestScore">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">🗑️ Waste Impact</div>
+                    <div class="score-value" id="wasteScore">0</div>
+                </div>
+            </div>
+            <div class="overall-risk" id="overallRisk">
+                <h3>Overall Environmental Risk</h3>
+                <div class="risk-level" id="riskLevel">-</div>
+            </div>
+        </div>
+
+        <!-- Document Upload Section -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">📎</span>
+                Document Upload
+            </h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Environmental Impact Assessment <span class="required">*</span></label>
+                    <label class="file-upload">
+                        <span class="file-upload-icon">📄</span>
+                        <span class="file-upload-text">Click to upload EIA report</span>
+                        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileUpload(this, 'eia')">
+                        <div class="file-name" id="eia-name"></div>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Pollution Control Certificate <span class="required">*</span></label>
+                    <label class="file-upload">
+                        <span class="file-upload-icon">🏭</span>
+                        <span class="file-upload-text">Click to upload certificate</span>
+                        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileUpload(this, 'pollution')">
+                        <div class="file-name" id="pollution-name"></div>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Waste Management Plan <span class="required">*</span></label>
+                    <label class="file-upload">
+                        <span class="file-upload-icon">♻️</span>
+                        <span class="file-upload-text">Click to upload plan</span>
+                        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileUpload(this, 'waste')">
+                        <div class="file-name" id="waste-name"></div>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Land Ownership Document <span class="required">*</span></label>
+                    <label class="file-upload">
+                        <span class="file-upload-icon">🏞️</span>
+                        <span class="file-upload-text">Click to upload document</span>
+                        <input type="file" accept=".pdf,.doc,.docx" onchange="handleFileUpload(this, 'land')">
+                        <div class="file-name" id="land-name"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">💳</span>
+                Payment Gateway
+            </h2>
+            <p style="color: #b2dfdb; margin-bottom: 20px; font-size: 1.1em;">
+                Application Fee: ₹5,000 | Select your payment method
+            </p>
+            <div class="payment-options" id="paymentOptions">
+                <div class="payment-option" onclick="selectPayment('upi')">
+                    <span class="payment-icon">📱</span>
+                    <div class="payment-name">UPI Payment</div>
+                </div>
+                <div class="payment-option" onclick="selectPayment('debit')">
+                    <span class="payment-icon">💳</span>
+                    <div class="payment-name">Debit Card</div>
+                </div>
+                <div class="payment-option" onclick="selectPayment('credit')">
+                    <span class="payment-icon">💎</span>
+                    <div class="payment-name">Credit Card</div>
+                </div>
+            </div>
+            <div id="paymentSuccess" style="display: none; margin-top: 20px; padding: 20px; background: rgba(76, 175, 80, 0.3); border-radius: 15px; border: 2px solid #4caf50;">
+                <p style="color: #a5d6a7; font-size: 1.2em; text-align: center;">✅ Payment Successful! You can now submit your application.</p>
+            </div>
+        </div>
+
+        <!-- Submit Application -->
+        <div class="glass-card">
+            <button type="button" class="btn btn-submit" id="submitBtn" onclick="submitApplication()">
+                <span>🚀</span>
+                <span>Submit Application</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- UPI Payment Modal -->
+    <div class="payment-modal" id="upiModal">
+        <div class="payment-modal-content">
+            <div class="modal-header">
+                <h2>📱 UPI Payment</h2>
+                <button class="close-btn" onclick="closePaymentModal('upiModal')">×</button>
+            </div>
+            <div class="upi-section">
+                <p style="color: #b2dfdb; margin-bottom: 20px;">Scan QR code or use UPI ID to pay ₹5,000</p>
+                
+                <div class="qr-code-container" id="qrCodeContainer">
+                    <img src="img qr.png" alt="UPI Payment QR Code" >
+                </div>
+
+                <div class="upi-id-box">
+                    <p>UPI ID:</p>
+                    <div class="upi-id" id="upiIdDisplay">environment@upi</div>
+                    <button class="copy-btn" onclick="copyUpiId()">📋 Copy UPI ID</button>
+                </div>
+
+                <div class="upload-qr-section">
+                    <h3>🔄 Upload Your Custom QR Code</h3>
+                    <p style="color: #b2dfdb; margin-bottom: 15px; font-size: 0.95em;">You can upload your own payment QR code</p>
+                    <label class="file-upload">
+                        <span class="file-upload-icon">📤</span>
+                        <span class="file-upload-text">Click to upload custom QR code</span>
+                        <input type="file" accept="image/*" onchange="uploadCustomQR(this)">
+                    </label>
+                    
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="customUpiId">Custom UPI ID:</label>
+                        <input type="text" id="customUpiId" placeholder="yourname@bankname" style="text-align: center;">
+                        <button class="copy-btn" onclick="updateUpiId()" style="width: 100%; margin-top: 10px;">✅ Update UPI ID</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-pay" onclick="confirmUpiPayment()">
+                    <span>✅</span>
+                    <span>Confirm Payment</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Payment Modal (Debit/Credit) -->
+    <div class="payment-modal" id="cardModal">
+        <div class="payment-modal-content">
+            <div class="modal-header">
+                <h2 id="cardModalTitle">💳 Card Payment</h2>
+                <button class="close-btn" onclick="closePaymentModal('cardModal')">×</button>
+            </div>
+            
+            <div class="card-preview">
+                <div class="card-chip"></div>
+                <div class="card-number-display" id="cardNumberPreview">•••• •••• •••• ••••</div>
+                <div class="card-details-display">
+                    <div>
+                        <div style="font-size: 0.7em; color: rgba(255,255,255,0.7);">CARD HOLDER</div>
+                        <div class="card-holder-display" id="cardHolderPreview">YOUR NAME</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.7em; color: rgba(255,255,255,0.7);">VALID THRU</div>
+                        <div class="card-expiry-display" id="cardExpiryPreview">MM/YY</div>
+                    </div>
+                </div>
+            </div>
+
+            <form class="card-form" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number <span class="required">*</span></label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardHolder">Card Holder Name <span class="required">*</span></label>
+                    <input type="text" id="cardHolder" placeholder="JOHN DOE" oninput="updateCardPreview()" style="text-transform: uppercase;" required>
+                </div>
+
+                <div class="card-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date <span class="required">*</span></label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" oninput="formatExpiryDate(this)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV <span class="required">*</span></label>
+                        <input type="password" id="cvv" placeholder="123" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <p style="color: #b2dfdb; font-size: 0.95em;">Payment Amount: <strong style="color: #4caf50; font-size: 1.3em;">₹5,000</strong></p>
+                </div>
+
+                <button class="btn btn-pay" onclick="processCardPayment()">
+                    <span>💳</span>
+                    <span>Pay ₹5,000</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <h2>Application Submitted Successfully!</h2>
+            <p>Your environmental clearance application has been received and is under review.</p>
+            <div class="application-id" id="applicationId">APP-ID-XXXXX</div>
+            <p>Please save this Application ID for future reference.</p>
+            <p style="font-size: 1em; margin-top: 15px;">You will receive updates via email at the registered address.</p>
+            <button class="close-modal" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize background animations
+        function initBackgroundAnimations() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            
+            // Create floating leaves
+            for (let i = 0; i < 25; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDuration = (Math.random() * 12 + 8) + 's';
+                leaf.style.animationDelay = Math.random() * 5 + 's';
+                leaf.style.width = (Math.random() * 20 + 20) + 'px';
+                leaf.style.height = (Math.random() * 20 + 20) + 'px';
+                bgAnimation.appendChild(leaf);
+            }
+            
+            // Create glowing particles
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 12 + 8) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                bgAnimation.appendChild(particle);
+            }
+
+            // Create fireflies
+            for (let i = 0; i < 8; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.left = Math.random() * 100 + '%';
+                firefly.style.top = Math.random() * 100 + '%';
+                firefly.style.animationDelay = Math.random() * 8 + 's';
+                firefly.style.animationDuration = (Math.random() * 10 + 20) + 's';
+                bgAnimation.appendChild(firefly);
+            }
+
+            // Create waves
+            const wave = document.createElement('div');
+            wave.className = 'wave';
+            bgAnimation.appendChild(wave);
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success', icon = '✅') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <span class="notification-icon">${icon}</span>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // File upload handler
+        const uploadedFiles = {};
+        function handleFileUpload(input, type) {
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                document.getElementById(`${type}-name`).textContent = `✓ ${fileName}`;
+                uploadedFiles[type] = fileName;
+                showNotification(`${fileName} uploaded successfully!`, 'success', '📄');
+            }
+        }
+
+        // Calculate Environmental Impact Score
+        function calculateImpactScore() {
+            const waterUsage = document.getElementById('waterUsage').value;
+            const airPollution = document.getElementById('airPollution').value;
+            const wasteGeneration = document.getElementById('wasteGeneration').value;
+            const forestImpact = document.getElementById('forestImpact').value;
+
+            if (!waterUsage || !airPollution || !wasteGeneration || !forestImpact) {
+                showNotification('Please fill all environmental details first!', 'error', '⚠️');
+                return;
+            }
+
+            // Calculate scores
+            const scoreMap = { low: 3, medium: 6, high: 9 };
+            
+            const airScore = scoreMap[airPollution];
+            const waterScore = scoreMap[waterUsage];
+            const forestScoreVal = scoreMap[forestImpact];
+            const wasteScore = scoreMap[wasteGeneration];
+
+            // Update scores with animation
+            setTimeout(() => {
+                document.getElementById('airScore').textContent = airScore;
+                document.getElementById('waterScore').textContent = waterScore;
+                document.getElementById('forestScore').textContent = forestScoreVal;
+                document.getElementById('wasteScore').textContent = wasteScore;
+            }, 300);
+
+            // Calculate overall risk
+            const totalScore = airScore + waterScore + forestScoreVal + wasteScore;
+            const averageScore = totalScore / 4;
+
+            let riskLevel, riskColor, riskBorder;
+            if (averageScore <= 4) {
+                riskLevel = '🟢 Low Risk';
+                riskColor = '#4caf50';
+                riskBorder = '#4caf50';
+            } else if (averageScore <= 7) {
+                riskLevel = '🟡 Moderate Risk';
+                riskColor = '#ff9800';
+                riskBorder = '#ff9800';
+            } else {
+                riskLevel = '🔴 High Risk';
+                riskColor = '#f44336';
+                riskBorder = '#f44336';
+            }
+
+            const overallRisk = document.getElementById('overallRisk');
+            overallRisk.style.borderColor = riskBorder;
+            
+            setTimeout(() => {
+                document.getElementById('riskLevel').textContent = riskLevel;
+                document.getElementById('riskLevel').style.color = riskColor;
+            }, 500);
+
+            // Show the impact score card
+            document.getElementById('impactScoreCard').style.display = 'block';
+            
+            // Scroll to impact score
+            setTimeout(() => {
+                document.getElementById('impactScoreCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 600);
+
+            showNotification('Environmental impact calculated successfully!', 'success', '📊');
+        }
+
+        // Payment selection
+        let selectedPayment = null;
+        let currentCardType = '';
+        
+        function selectPayment(method) {
+            selectedPayment = method;
+            currentCardType = method;
+            
+            // Remove selected class from all
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked
+            event.target.closest('.payment-option').classList.add('selected');
+            
+            // Open appropriate modal
+            if (method === 'upi') {
+                document.getElementById('upiModal').style.display = 'flex';
+            } else if (method === 'debit' || method === 'credit') {
+                document.getElementById('cardModalTitle').textContent = method === 'debit' ? '💳 Debit Card Payment' : '💎 Credit Card Payment';
+                document.getElementById('cardModal').style.display = 'flex';
+            }
+            
+            showNotification(`${method.toUpperCase()} payment method selected`, 'info', '💳');
+        }
+
+        // Close payment modal
+        function closePaymentModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // UPI Functions
+        function copyUpiId() {
+            const upiId = document.getElementById('upiIdDisplay').textContent;
+            navigator.clipboard.writeText(upiId).then(() => {
+                showNotification('UPI ID copied to clipboard!', 'success', '📋');
+            });
+        }
+
+        function uploadCustomQR(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('qrCodeImage').src = e.target.result;
+                    showNotification('Custom QR code uploaded successfully!', 'success', '✅');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function updateUpiId() {
+            const customUpiId = document.getElementById('customUpiId').value;
+            if (customUpiId.trim() === '') {
+                showNotification('Please enter a valid UPI ID!', 'error', '⚠️');
+                return;
+            }
+            document.getElementById('upiIdDisplay').textContent = customUpiId;
+            showNotification('UPI ID updated successfully!', 'success', '✅');
+        }
+
+        function confirmUpiPayment() {
+            const btn = event.target;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span><span>Processing...</span>';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                closePaymentModal('upiModal');
+                document.getElementById('paymentSuccess').style.display = 'block';
+                showNotification('UPI payment of ₹5,000 successful!', 'success', '✅');
+                document.getElementById('paymentSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }, 2500);
+        }
+
+        // Card Functions
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formattedValue;
+            
+            // Update preview
+            document.getElementById('cardNumberPreview').textContent = formattedValue || '•••• •••• •••• ••••';
+        }
+
+        function formatExpiryDate(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+            
+            // Update preview
+            document.getElementById('cardExpiryPreview').textContent = value || 'MM/YY';
+        }
+
+        function updateCardPreview() {
+            const cardHolder = document.getElementById('cardHolder').value;
+            document.getElementById('cardHolderPreview').textContent = cardHolder.toUpperCase() || 'YOUR NAME';
+        }
+
+        function processCardPayment() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardHolder = document.getElementById('cardHolder').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+
+            // Validation
+            if (cardNumber.length < 16) {
+                showNotification('Please enter a valid card number!', 'error', '⚠️');
+                return;
+            }
+            if (cardHolder.trim() === '') {
+                showNotification('Please enter card holder name!', 'error', '⚠️');
+                return;
+            }
+            if (expiryDate.length !== 5) {
+                showNotification('Please enter valid expiry date (MM/YY)!', 'error', '⚠️');
+                return;
+            }
+            if (cvv.length !== 3) {
+                showNotification('Please enter valid CVV!', 'error', '⚠️');
+                return;
+            }
+
+            const btn = event.target;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span><span>Processing...</span>';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                closePaymentModal('cardModal');
+                document.getElementById('paymentSuccess').style.display = 'block';
+                showNotification(`${currentCardType === 'debit' ? 'Debit' : 'Credit'} card payment of ₹5,000 successful!`, 'success', '✅');
+                document.getElementById('paymentSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                
+                // Reset form
+                document.getElementById('cardNumber').value = '';
+                document.getElementById('cardHolder').value = '';
+                document.getElementById('expiryDate').value = '';
+                document.getElementById('cvv').value = '';
+                document.getElementById('cardNumberPreview').textContent = '•••• •••• •••• ••••';
+                document.getElementById('cardHolderPreview').textContent = 'YOUR NAME';
+                document.getElementById('cardExpiryPreview').textContent = 'MM/YY';
+            }, 2500);
+        }
+
+        // Submit application
+        function submitApplication() {
+            // Validate form
+            const form = document.getElementById('applicationForm');
+            if (!form.checkValidity()) {
+                showNotification('Please fill all required project details!', 'error', '⚠️');
+                form.reportValidity();
+                return;
+            }
+
+            // Check environmental details
+            const waterUsage = document.getElementById('waterUsage').value;
+            const airPollution = document.getElementById('airPollution').value;
+            const wasteGeneration = document.getElementById('wasteGeneration').value;
+            const forestImpact = document.getElementById('forestImpact').value;
+
+            if (!waterUsage || !airPollution || !wasteGeneration || !forestImpact) {
+                showNotification('Please complete environmental impact assessment!', 'error', '⚠️');
+                return;
+            }
+
+            // Check if impact score is calculated
+            if (document.getElementById('impactScoreCard').style.display === 'none') {
+                showNotification('Please calculate environmental impact first!', 'error', '⚠️');
+                return;
+            }
+
+            // Check if all documents are uploaded
+            if (Object.keys(uploadedFiles).length < 4) {
+                showNotification('Please upload all required documents!', 'error', '⚠️');
+                return;
+            }
+
+            // Check payment
+            if (!document.getElementById('paymentSuccess').style.display || 
+                document.getElementById('paymentSuccess').style.display === 'none') {
+                showNotification('Please complete payment first!', 'error', '⚠️');
+                return;
+            }
+
+            // Process submission
+            const btn = document.getElementById('submitBtn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span><span>Submitting Application...</span>';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Generate random application ID
+                const randomId = 'EC-' + new Date().getFullYear() + '-' + 
+                                 Math.floor(10000 + Math.random() * 90000);
+                
+                document.getElementById('applicationId').textContent = randomId;
+                document.getElementById('successModal').style.display = 'flex';
+                
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }, 3000);
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+            
+            // Reset form (optional)
+            if (confirm('Do you want to submit another application?')) {
+                location.reload();
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            initBackgroundAnimations();
+            
+            setTimeout(() => {
+                showNotification('Welcome to Environmental Clearance Portal!', 'info', '🌿');
+            }, 1000);
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('payment-modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

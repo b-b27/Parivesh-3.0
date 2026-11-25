@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Environmental Project Application - EcoPortal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #0f766e 100%);
+        }
+
+        /* Animated Background */
+        .background-layer {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* Forest Pattern Background */
+        .forest-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(52, 211, 153, 0.1) 35px, rgba(52, 211, 153, 0.1) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(16, 185, 129, 0.1) 35px, rgba(16, 185, 129, 0.1) 70px);
+        }
+
+        /* Mountain Silhouette */
+        .mountains {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            opacity: 0.15;
+        }
+
+        .mountain {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .mountain-1 {
+            left: 0;
+            border-width: 0 0 250px 400px;
+            border-color: transparent transparent #10b981 transparent;
+        }
+
+        .mountain-2 {
+            left: 300px;
+            border-width: 0 0 300px 500px;
+            border-color: transparent transparent #059669 transparent;
+        }
+
+        .mountain-3 {
+            right: 0;
+            border-width: 0 0 200px 350px;
+            border-color: transparent transparent #047857 transparent;
+        }
+
+        /* Animated Leaves */
+        .leaf {
+            position: absolute;
+            font-size: 24px;
+            animation: fall linear infinite;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(52, 211, 153, 0.6);
+            border-radius: 50%;
+            animation: float ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 16px;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fade-in 0.6s ease-out;
+        }
+
+        .page-title h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .page-title p {
+            color: #a7f3d0;
+            font-size: 1.25rem;
+        }
+
+        /* Glass Card Effect */
+        .glass-card {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 60px -5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Search Section */
+        .search-section {
+            margin-bottom: 32px;
+            animation: slide-up 0.8s ease-out;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 250px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        input[type="text"]:focus {
+            border-color: #34d399;
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3);
+        }
+
+        button {
+            padding: 16px 32px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(52, 211, 153, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Error Message */
+        .error-message {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fecaca;
+            animation: shake 0.5s ease-in-out;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            animation: fade-in 0.6s ease-out;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        /* Workflow Progress */
+        .workflow-section {
+            margin-bottom: 32px;
+        }
+
+        .workflow-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .workflow-container {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 48px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #34d399 0%, #10b981 100%);
+            border-radius: 2px;
+            transition: width 1s ease;
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
+        }
+
+        .stages-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 32px;
+            position: relative;
+        }
+
+        .stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stage-icon {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .stage-icon.inactive {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stage-icon.active {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            box-shadow: 0 8px 24px rgba(52, 211, 153, 0.4);
+            transform: scale(1.1);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .stage-name {
+            text-align: center;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .stage-name.inactive {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .stage-name.active {
+            color: #6ee7b7;
+        }
+
+        .stage-indicator {
+            margin-top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #34d399;
+            animation: pulse 2s ease-in-out infinite;
+            display: none;
+        }
+
+        .stage-indicator.show {
+            display: block;
+        }
+
+        /* Application Details */
+        .details-section {
+            margin-bottom: 32px;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .details-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .status-badge {
+            padding: 12px 24px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            color: white;
+            font-weight: 600;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .detail-item {
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .detail-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(8px);
+        }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .detail-icon {
+            font-size: 1.5rem;
+        }
+
+        .detail-label span {
+            color: #6ee7b7;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-left: 36px;
+        }
+
+        .tip-box {
+            margin-top: 32px;
+            padding: 24px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .tip-box p {
+            color: white;
+            text-align: center;
+        }
+
+        /* Sample IDs */
+        .sample-ids {
+            margin-bottom: 32px;
+        }
+
+        .sample-ids p {
+            color: #a7f3d0;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        /* Recent Applications */
+        .recent-section {
+            animation: fade-in 0.6s ease-out;
+        }
+
+        .recent-section.hide {
+            display: none;
+        }
+
+        .recent-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .recent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .recent-card {
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .recent-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .recent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .recent-id {
+            color: #6ee7b7;
+            font-weight: 600;
+        }
+
+        .recent-status {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            background: rgba(52, 211, 153, 0.3);
+            color: #a7f3d0;
+        }
+
+        .recent-name {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .recent-category {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+        }
+
+        /* Animations */
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(52, 211, 153, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(52, 211, 153, 0.8);
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #34d399, #10b981);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #10b981, #059669);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .glass-card {
+                padding: 24px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            input[type="text"] {
+                min-width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .progress-line {
+                display: none;
+            }
+
+            .stages-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Animated Background -->
+        <div class="background-layer">
+            <!-- Forest Pattern -->
+            <div class="forest-pattern"></div>
+
+            <!-- Mountains -->
+            <div class="mountains">
+                <div class="mountain mountain-1"></div>
+                <div class="mountain mountain-2"></div>
+                <div class="mountain mountain-3"></div>
+            </div>
+
+            <!-- Animated Leaves Container -->
+            <div id="leaves-container"></div>
+
+            <!-- Floating Particles Container -->
+            <div id="particles-container"></div>
+        </div>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Page Title -->
+            <div class="page-title">
+                <h1>Track Your Environmental Project Application</h1>
+                <p>Monitor your eco-friendly project status in real-time</p>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section glass-card">
+                <div class="search-container">
+                    <label for="applicationId">Enter Application ID</label>
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="applicationId" 
+                            placeholder="e.g., APP023"
+                            autocomplete="off"
+                        >
+                        <button onclick="trackApplication()">Track Application 🔍</button>
+                    </div>
+                    <div id="errorMessage" class="error-message"></div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section">
+                <!-- Workflow Progress -->
+                <div class="workflow-section glass-card">
+                    <h2 class="workflow-title">Application Progress</h2>
+                    <div class="workflow-container">
+                        <div class="progress-line">
+                            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="stages-container">
+                            <div class="stage">
+                                <div class="stage-icon inactive" id="stage-0">📝</div>
+                                <span class="stage-name inactive" id="stage-name-0">Apply</span>
+                                <div class="stage-indicator" id="indicator-0"></div>
+                            </div>
+                            <div class="stage">
+                                <div class="stage-icon inactive" id="stage-1">🔍</div>
+                                <span class="stage-name inactive" id="stage-name-1">Scrutiny</span>
+                                <div class="stage-indicator" id="indicator-1"></div>
+                            </div>
+                            <div class="stage">
+                                <div class="stage-icon inactive" id="stage-2">👥</div>
+                                <span class="stage-name inactive" id="stage-name-2">Meeting</span>
+                                <div class="stage-indicator" id="indicator-2"></div>
+                            </div>
+                            <div class="stage">
+                                <div class="stage-icon inactive" id="stage-3">✅</div>
+                                <span class="stage-name inactive" id="stage-name-3">Final Decision</span>
+                                <div class="stage-indicator" id="indicator-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Application Details -->
+                <div class="details-section glass-card">
+                    <div class="details-header">
+                        <h2 class="details-title">Application Details</h2>
+                        <div class="status-badge" id="statusBadge">Under Review</div>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <span class="detail-icon">🆔</span>
+                                <span>Application ID</span>
+                            </div>
+                            <p class="detail-value" id="detailId">-</p>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <span class="detail-icon">🌿</span>
+                                <span>Project Name</span>
+                            </div>
+                            <p class="detail-value" id="detailName">-</p>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <span class="detail-icon">📂</span>
+                                <span>Category</span>
+                            </div>
+                            <p class="detail-value" id="detailCategory">-</p>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <span class="detail-icon">📍</span>
+                                <span>Location</span>
+                            </div>
+                            <p class="detail-value" id="detailLocation">-</p>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <span class="detail-icon">📅</span>
+                                <span>Submission Date</span>
+                            </div>
+                            <p class="detail-value" id="detailSubmission">-</p>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <span class="detail-icon">🕒</span>
+                                <span>Last Update</span>
+                            </div>
+                            <p class="detail-value" id="detailUpdate">-</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <p><strong>💡 Tip:</strong> You will receive email notifications for any status updates</p>
+                    </div>
+                </div>
+
+                <!-- Sample IDs Info -->
+                <div class="sample-ids glass-card">
+                    <p><strong>Try these sample IDs:</strong> APP023, APP045, APP012, APP067</p>
+                </div>
+            </div>
+
+            <!-- Recent Applications -->
+            <div id="recentSection" class="recent-section glass-card">
+                <h3 class="recent-title">Recent Applications</h3>
+                <div class="recent-grid" id="recentGrid"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mock Data
+        const mockApplications = {
+            'APP023': {
+                id: 'APP023',
+                projectName: 'Solar Farming Initiative',
+                category: 'Renewable Energy',
+                location: 'Mumbai',
+                submissionDate: 'March 15, 2026',
+                status: 'Under Scrutiny',
+                currentStage: 1,
+                lastUpdate: 'March 13, 2026'
+            },
+            'APP045': {
+                id: 'APP045',
+                projectName: 'Urban Forest Restoration',
+                category: 'Reforestation',
+                location: 'Delhi',
+                submissionDate: 'March 10, 2026',
+                status: 'In Meeting',
+                currentStage: 2,
+                lastUpdate: 'March 12, 2026'
+            },
+            'APP012': {
+                id: 'APP012',
+                projectName: 'River Cleanup Drive',
+                category: 'Water Conservation',
+                location: 'Bangalore',
+                submissionDate: 'March 5, 2026',
+                status: 'Approved',
+                currentStage: 3,
+                lastUpdate: 'March 11, 2026'
+            },
+            'APP067': {
+                id: 'APP067',
+                projectName: 'Wind Energy Project',
+                category: 'Renewable Energy',
+                location: 'Chennai',
+                submissionDate: 'March 8, 2026',
+                status: 'Application Received',
+                currentStage: 0,
+                lastUpdate: 'March 8, 2026'
+            }
+        };
+
+        // Initialize animated elements
+        function initAnimatedElements() {
+            const leavesContainer = document.getElementById('leaves-container');
+            const particlesContainer = document.getElementById('particles-container');
+
+            // Create animated leaves
+            for (let i = 0; i < 20; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.textContent = '🍃';
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDelay = Math.random() * 10 + 's';
+                leaf.style.animationDuration = (10 + Math.random() * 10) + 's';
+                leaf.style.opacity = 0.6 + Math.random() * 0.4;
+                leavesContainer.appendChild(leaf);
+            }
+
+            // Create floating particles
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (3 + Math.random() * 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Display Recent Applications
+        function displayRecentApplications() {
+            const recentGrid = document.getElementById('recentGrid');
+            recentGrid.innerHTML = '';
+
+            Object.values(mockApplications).forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'recent-card';
+                card.onclick = () => selectApplication(app.id);
+                card.innerHTML = `
+                    <div class="recent-header">
+                        <span class="recent-id">${app.id}</span>
+                        <span class="recent-status">${app.status}</span>
+                    </div>
+                    <p class="recent-name">${app.projectName}</p>
+                    <p class="recent-category">${app.category}</p>
+                `;
+                recentGrid.appendChild(card);
+            });
+        }
+
+        // Select Application from Recent
+        function selectApplication(appId) {
+            document.getElementById('applicationId').value = appId;
+            trackApplication();
+        }
+
+        // Track Application Function
+        function trackApplication() {
+            const input = document.getElementById('applicationId');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultsSection = document.getElementById('resultsSection');
+            const recentSection = document.getElementById('recentSection');
+            
+            const appId = input.value.trim().toUpperCase();
+
+            // Clear previous error
+            errorMessage.classList.remove('show');
+            errorMessage.textContent = '';
+
+            // Validate input
+            if (!appId) {
+                errorMessage.textContent = 'Please enter an Application ID';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Find application
+            const app = mockApplications[appId];
+            
+            if (app) {
+                // Hide recent section, show results
+                recentSection.classList.add('hide');
+                resultsSection.classList.add('show');
+
+                // Update details
+                document.getElementById('detailId').textContent = app.id;
+                document.getElementById('detailName').textContent = app.projectName;
+                document.getElementById('detailCategory').textContent = app.category;
+                document.getElementById('detailLocation').textContent = app.location;
+                document.getElementById('detailSubmission').textContent = app.submissionDate;
+                document.getElementById('detailUpdate').textContent = app.lastUpdate;
+                document.getElementById('statusBadge').textContent = app.status;
+
+                // Update workflow progress
+                updateWorkflow(app.currentStage);
+
+                // Scroll to results
+                setTimeout(() => {
+                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            } else {
+                errorMessage.textContent = 'Application not found. Please check the ID and try again.';
+                errorMessage.classList.add('show');
+                resultsSection.classList.remove('show');
+                recentSection.classList.remove('hide');
+            }
+        }
+
+        // Update Workflow Progress
+        function updateWorkflow(currentStage) {
+            const totalStages = 3; // 0 to 3
+            const progressPercent = (currentStage / totalStages) * 100;
+            
+            // Update progress bar
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+
+            // Update stage icons and names
+            for (let i = 0; i <= 3; i++) {
+                const icon = document.getElementById('stage-' + i);
+                const name = document.getElementById('stage-name-' + i);
+                const indicator = document.getElementById('indicator-' + i);
+
+                if (i <= currentStage) {
+                    icon.classList.remove('inactive');
+                    icon.classList.add('active');
+                    name.classList.remove('inactive');
+                    name.classList.add('active');
+                    indicator.classList.add('show');
+                } else {
+                    icon.classList.remove('active');
+                    icon.classList.add('inactive');
+                    name.classList.remove('active');
+                    name.classList.add('inactive');
+                    indicator.classList.remove('show');
+                }
+            }
+        }
+
+        // Enter key support
+        document.getElementById('applicationId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                trackApplication();
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            initAnimatedElements();
+            displayRecentApplications();
+        });
+    </script>
+</body>
+</html>

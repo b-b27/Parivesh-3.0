@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Review & Scrutiny - Environmental Clearance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d3d29 0%, #1a5c3f 25%, #0f4d35 50%, #083824 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background Elements */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Floating Leaves */
+        .leaf {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #4caf50, #81c784);
+            clip-path: polygon(50% 0%, 80% 30%, 100% 50%, 80% 70%, 50% 100%, 20% 70%, 0% 50%, 20% 30%);
+            animation: fall linear infinite;
+            opacity: 0.7;
+            filter: blur(0.5px);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg) translateX(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg) translateX(100px);
+                opacity: 0.2;
+            }
+        }
+
+        /* Glowing Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #90ee90;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            box-shadow: 0 0 15px rgba(144, 238, 144, 0.8), 0 0 25px rgba(144, 238, 144, 0.4);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(80px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Nature Waves */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="rgba(76, 175, 80, 0.1)"></path></svg>');
+            animation: wave 15s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Butterflies */
+        .butterfly {
+            position: absolute;
+            font-size: 20px;
+            animation: flyButterfly 25s ease-in-out infinite;
+        }
+
+        @keyframes flyButterfly {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(300px, -200px) rotate(45deg);
+            }
+            50% {
+                transform: translate(600px, 100px) rotate(-30deg);
+            }
+            75% {
+                transform: translate(200px, 300px) rotate(60deg);
+            }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            color: #a8e6cf;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #c8f5e0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 45px rgba(76, 175, 80, 0.4);
+            border-color: rgba(76, 175, 80, 0.4);
+        }
+
+        /* Card Title */
+        .card-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #a8e6cf;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .card-title .icon {
+            font-size: 1.3em;
+            filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.6));
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #4caf50;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-left-color: #81c784;
+        }
+
+        .info-label {
+            font-size: 0.9em;
+            color: #b2dfdb;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 1.1em;
+            color: #e0f2f1;
+            font-weight: 500;
+        }
+
+        /* Documents List */
+        .document-item {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-item::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--status-color);
+            transition: width 0.3s ease;
+        }
+
+        .document-item:hover::after {
+            width: 8px;
+        }
+
+        .document-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.02);
+        }
+
+        .document-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .document-icon {
+            font-size: 2em;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .document-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #e0f2f1;
+        }
+
+        .status-badge {
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .status-verified {
+            background: rgba(76, 175, 80, 0.3);
+            color: #a5d6a7;
+            border: 2px solid #4caf50;
+        }
+
+        .status-review {
+            background: rgba(255, 193, 7, 0.3);
+            color: #ffd54f;
+            border: 2px solid #ffc107;
+        }
+
+        .status-missing {
+            background: rgba(244, 67, 54, 0.3);
+            color: #ef9a9a;
+            border: 2px solid #f44336;
+        }
+
+        /* Deficiency Alert */
+        .deficiency-alert {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(255, 87, 34, 0.2));
+            border: 2px solid #ff9800;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            animation: alertBlink 2s ease-in-out infinite;
+            box-shadow: 0 0 25px rgba(255, 152, 0, 0.3);
+        }
+
+        @keyframes alertBlink {
+            0%, 100% { box-shadow: 0 0 25px rgba(255, 152, 0, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(255, 152, 0, 0.6); }
+        }
+
+        .alert-icon {
+            font-size: 2.5em;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .alert-content h3 {
+            color: #ffcc80;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .alert-content p {
+            color: #ffe0b2;
+            line-height: 1.6;
+        }
+
+        .deficiency-list {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+
+        .deficiency-list li {
+            color: #ffccbc;
+            margin-bottom: 8px;
+            list-style: none;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .deficiency-list li::before {
+            content: '⚠';
+            position: absolute;
+            left: 0;
+            color: #ff9800;
+        }
+
+        /* Action Buttons */
+        .action-panel {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .action-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-correction {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            box-shadow: 0 6px 25px rgba(255, 152, 0, 0.4);
+        }
+
+        .btn-correction:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 152, 0, 0.6);
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+            box-shadow: 0 6px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.6);
+        }
+
+        .btn-refer {
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+            box-shadow: 0 6px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        .btn-refer:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(33, 150, 243, 0.6);
+        }
+
+        .action-btn:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            min-width: 350px;
+            padding: 25px 30px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: slideInRight 0.5s ease, fadeOut 0.5s ease 4.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(450px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(450px);
+            }
+        }
+
+        .notification-success {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(56, 142, 60, 0.95));
+            border-color: #4caf50;
+        }
+
+        .notification-warning {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.95), rgba(245, 124, 0, 0.95));
+            border-color: #ff9800;
+        }
+
+        .notification-info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.95), rgba(25, 118, 210, 0.95));
+            border-color: #2196f3;
+        }
+
+        .notification-icon {
+            font-size: 1.8em;
+            animation: notificationPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes notificationPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Status Panel */
+        .status-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 2px dashed rgba(76, 175, 80, 0.3);
+        }
+
+        .status-panel h3 {
+            color: #a8e6cf;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .status-message {
+            background: rgba(33, 150, 243, 0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2196f3;
+            color: #b3e5fc;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInLeft 0.5s ease;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .status-message .time {
+            font-size: 0.85em;
+            color: #81d4fa;
+            margin-left: auto;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #81c784, #4caf50);
+            background-size: 200% 100%;
+            animation: progressShine 2s linear infinite;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            transition: width 1s ease;
+        }
+
+        @keyframes progressShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .action-panel {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                min-width: 100%;
+            }
+
+            .notification {
+                min-width: 280px;
+                right: 15px;
+                top: 15px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation" id="bgAnimation"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌿 Application Review & Scrutiny</h1>
+            <p>Environmental Clearance Management System - Document Verification Portal</p>
+        </div>
+
+        <!-- Application Overview -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">📋</span>
+                Application Overview
+            </h2>
+            <div class="grid-2">
+                <div class="info-item">
+                    <div class="info-label">Application ID</div>
+                    <div class="info-value" id="appId">EC-2026-45678</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Project Name</div>
+                    <div class="info-value" id="projectName">Green Energy Solar Plant</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Applicant Name</div>
+                    <div class="info-value" id="applicantName">EcoTech Industries Pvt. Ltd.</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Industry Type</div>
+                    <div class="info-value" id="industryType">Renewable Energy - Solar Power</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Project Location</div>
+                    <div class="info-value" id="projectLocation">Rajasthan, India</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Land Area</div>
+                    <div class="info-value" id="landArea">120 Hectares</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Submission Date</div>
+                    <div class="info-value" id="submissionDate">March 1, 2026</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Current Status</div>
+                    <div class="info-value" id="currentStatus">Under Review</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 50%;">
+                    50% Complete
+                </div>
+            </div>
+        </div>
+
+        <!-- Documents Verification Panel -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">📄</span>
+                Documents Verification Panel
+            </h2>
+            
+            <div id="documentsList">
+                <div class="document-item" style="--status-color: #4caf50;" data-status="verified">
+                    <div class="document-info">
+                        <span class="document-icon" style="color: #4caf50;">✓</span>
+                        <span class="document-name">Environmental Impact Assessment Report</span>
+                    </div>
+                    <span class="status-badge status-verified">
+                        <span>✓</span> Verified
+                    </span>
+                </div>
+
+                <div class="document-item" style="--status-color: #4caf50;" data-status="verified">
+                    <div class="document-info">
+                        <span class="document-icon" style="color: #4caf50;">✓</span>
+                        <span class="document-name">Pollution Control Certificate</span>
+                    </div>
+                    <span class="status-badge status-verified">
+                        <span>✓</span> Verified
+                    </span>
+                </div>
+
+                <div class="document-item" style="--status-color: #ffc107;" data-status="review">
+                    <div class="document-info">
+                        <span class="document-icon" style="color: #ffc107;">⏳</span>
+                        <span class="document-name">Waste Management Plan</span>
+                    </div>
+                    <span class="status-badge status-review">
+                        <span>⏳</span> Needs Review
+                    </span>
+                </div>
+
+                <div class="document-item" style="--status-color: #f44336;" data-status="missing">
+                    <div class="document-info">
+                        <span class="document-icon" style="color: #f44336;">✗</span>
+                        <span class="document-name">Forest Clearance Certificate</span>
+                    </div>
+                    <span class="status-badge status-missing">
+                        <span>✗</span> Missing
+                    </span>
+                </div>
+
+                <div class="document-item" style="--status-color: #4caf50;" data-status="verified">
+                    <div class="document-info">
+                        <span class="document-icon" style="color: #4caf50;">✓</span>
+                        <span class="document-name">Water Resource Management Plan</span>
+                    </div>
+                    <span class="status-badge status-verified">
+                        <span>✓</span> Verified
+                    </span>
+                </div>
+
+                <div class="document-item" style="--status-color: #4caf50;" data-status="verified">
+                    <div class="document-info">
+                        <span class="document-icon" style="color: #4caf50;">✓</span>
+                        <span class="document-name">Land Acquisition Documents</span>
+                    </div>
+                    <span class="status-badge status-verified">
+                        <span>✓</span> Verified
+                    </span>
+                </div>
+            </div>
+
+            <!-- Smart Deficiency Detection -->
+            <div id="deficiencyAlert" class="deficiency-alert">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <h3>🔍 Smart Deficiency Detection Alert</h3>
+                    <p><strong>Critical Issues Detected:</strong></p>
+                    <ul class="deficiency-list" id="deficiencyList">
+                        <li><strong>Forest Clearance Certificate</strong> is missing. This is a mandatory document for projects in eco-sensitive zones.</li>
+                        <li><strong>Waste Management Plan</strong> requires additional review and corrections before approval.</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-weight: 600;">
+                        ⚡ Action Required: Applicant must upload the missing document and revise the incomplete submissions before proceeding to committee review.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Officer Action Panel -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">⚙️</span>
+                Officer Action Panel
+            </h2>
+            <p style="color: #b2dfdb; margin-bottom: 20px;">
+                Review the documents and take appropriate action based on the verification results
+            </p>
+
+            <div class="action-panel">
+                <button class="action-btn btn-correction" onclick="requestCorrection()">
+                    <span>📝</span>
+                    <span>Request Correction</span>
+                </button>
+
+                <button class="action-btn btn-approve" onclick="approveDocuments()">
+                    <span>✅</span>
+                    <span>Approve Documents</span>
+                </button>
+
+                <button class="action-btn btn-refer" onclick="referToCommittee()">
+                    <span>📋</span>
+                    <span>Refer to Committee</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Status Notification Panel -->
+        <div class="glass-card">
+            <h2 class="card-title">
+                <span class="icon">📊</span>
+                Status & Activity Log
+            </h2>
+            <div class="status-panel">
+                <h3>Recent Activities</h3>
+                <div id="statusLog">
+                    <div class="status-message">
+                        <span>🔍</span>
+                        <span>Application submitted and under initial review</span>
+                        <span class="time">2 hours ago</span>
+                    </div>
+                    <div class="status-message">
+                        <span>✓</span>
+                        <span>Environmental Impact Report verified successfully</span>
+                        <span class="time">1 hour ago</span>
+                    </div>
+                    <div class="status-message">
+                        <span>⚠</span>
+                        <span>Deficiencies detected in documentation</span>
+                        <span class="time">30 mins ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize background animations
+        function initBackgroundAnimations() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            
+            // Create floating leaves
+            for (let i = 0; i < 20; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                leaf.style.animationDelay = Math.random() * 5 + 's';
+                leaf.style.width = (Math.random() * 15 + 15) + 'px';
+                leaf.style.height = (Math.random() * 15 + 15) + 'px';
+                bgAnimation.appendChild(leaf);
+            }
+            
+            // Create glowing particles
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                bgAnimation.appendChild(particle);
+            }
+
+            // Create waves
+            const wave1 = document.createElement('div');
+            wave1.className = 'wave';
+            wave1.style.bottom = '0';
+            wave1.style.animationDelay = '0s';
+            bgAnimation.appendChild(wave1);
+
+            const wave2 = document.createElement('div');
+            wave2.className = 'wave';
+            wave2.style.bottom = '10px';
+            wave2.style.opacity = '0.5';
+            wave2.style.animationDelay = '-5s';
+            bgAnimation.appendChild(wave2);
+
+            // Create butterflies
+            for (let i = 0; i < 3; i++) {
+                const butterfly = document.createElement('div');
+                butterfly.className = 'butterfly';
+                butterfly.innerHTML = '🦋';
+                butterfly.style.left = Math.random() * 80 + '%';
+                butterfly.style.top = Math.random() * 60 + '%';
+                butterfly.style.animationDelay = (i * 8) + 's';
+                butterfly.style.animationDuration = (Math.random() * 10 + 20) + 's';
+                bgAnimation.appendChild(butterfly);
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success', icon = '✓') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <span class="notification-icon">${icon}</span>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Add status message to log
+        function addStatusMessage(message, icon = '📌') {
+            const statusLog = document.getElementById('statusLog');
+            const statusMessage = document.createElement('div');
+            statusMessage.className = 'status-message';
+            
+            const now = new Date();
+            const timeStr = 'Just now';
+            
+            statusMessage.innerHTML = `
+                <span>${icon}</span>
+                <span>${message}</span>
+                <span class="time">${timeStr}</span>
+            `;
+            
+            statusLog.insertBefore(statusMessage, statusLog.firstChild);
+
+            // Keep only last 5 messages
+            while (statusLog.children.length > 5) {
+                statusLog.removeChild(statusLog.lastChild);
+            }
+        }
+
+        // Request Correction
+        function requestCorrection() {
+            const btn = event.target.closest('.action-btn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="loading"></span><span>Processing...</span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const missingDocs = [];
+                document.querySelectorAll('.document-item').forEach(item => {
+                    const status = item.dataset.status;
+                    if (status === 'missing' || status === 'review') {
+                        const docName = item.querySelector('.document-name').textContent;
+                        missingDocs.push(docName);
+                    }
+                });
+                
+                showNotification(
+                    `Correction request sent to applicant for ${missingDocs.length} document(s)`,
+                    'warning',
+                    '📝'
+                );
+                
+                addStatusMessage(
+                    `Correction request issued for: ${missingDocs.join(', ')}`,
+                    '📝'
+                );
+                
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                
+                // Update progress
+                updateProgress(25);
+            }, 2000);
+        }
+
+        // Approve Documents
+        function approveDocuments() {
+            const missingCount = document.querySelectorAll('[data-status="missing"]').length;
+            const reviewCount = document.querySelectorAll('[data-status="review"]').length;
+            
+            if (missingCount > 0 || reviewCount > 0) {
+                showNotification(
+                    `Cannot approve: ${missingCount} missing and ${reviewCount} documents need review`,
+                    'warning',
+                    '⚠️'
+                );
+                return;
+            }
+            
+            const btn = event.target.closest('.action-btn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="loading"></span><span>Processing...</span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                showNotification(
+                    'All documents approved successfully! Application ready for committee review.',
+                    'success',
+                    '✅'
+                );
+                
+                addStatusMessage(
+                    'All documents verified and approved by reviewing officer',
+                    '✅'
+                );
+                
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                
+                // Update progress
+                updateProgress(100);
+                
+                document.getElementById('currentStatus').textContent = 'Documents Approved';
+            }, 2000);
+        }
+
+        // Refer to Committee
+        function referToCommittee() {
+            const verifiedCount = document.querySelectorAll('[data-status="verified"]').length;
+            const totalCount = document.querySelectorAll('.document-item').length;
+            
+            const btn = event.target.closest('.action-btn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="loading"></span><span>Processing...</span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                showNotification(
+                    `Application referred to Expert Committee for final review (${verifiedCount}/${totalCount} documents verified)`,
+                    'info',
+                    '📋'
+                );
+                
+                addStatusMessage(
+                    'Application forwarded to Expert Appraisal Committee for detailed evaluation',
+                    '📋'
+                );
+                
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                
+                // Update progress
+                updateProgress(75);
+                
+                document.getElementById('currentStatus').textContent = 'Referred to Committee';
+            }, 2000);
+        }
+
+        // Update progress bar
+        function updateProgress(percentage) {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '% Complete';
+        }
+
+        // Auto-detect deficiencies
+        function detectDeficiencies() {
+            const deficiencyList = document.getElementById('deficiencyList');
+            const deficiencyAlert = document.getElementById('deficiencyAlert');
+            const deficiencies = [];
+            
+            document.querySelectorAll('.document-item').forEach(item => {
+                const status = item.dataset.status;
+                const docName = item.querySelector('.document-name').textContent;
+                
+                if (status === 'missing') {
+                    deficiencies.push(`<li><strong>${docName}</strong> is missing. This is a mandatory document required for clearance approval.</li>`);
+                } else if (status === 'review') {
+                    deficiencies.push(`<li><strong>${docName}</strong> requires additional review and corrections before approval.</li>`);
+                }
+            });
+            
+            if (deficiencies.length > 0) {
+                deficiencyList.innerHTML = deficiencies.join('');
+                deficiencyAlert.style.display = 'flex';
+            } else {
+                deficiencyAlert.style.display = 'none';
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            initBackgroundAnimations();
+            detectDeficiencies();
+            
+            // Show welcome message
+            setTimeout(() => {
+                showNotification(
+                    'Application review system initialized successfully',
+                    'info',
+                    '🌿'
+                );
+            }, 1000);
+        });
+
+        // Dynamic document status update (simulate real-time updates)
+        function simulateRealTimeUpdate() {
+            setInterval(() => {
+                const reviewDocs = document.querySelectorAll('[data-status="review"]');
+                if (reviewDocs.length > 0 && Math.random() > 0.7) {
+                    const randomDoc = reviewDocs[Math.floor(Math.random() * reviewDocs.length)];
+                    // Could add animation or notification here
+                }
+            }, 10000);
+        }
+
+        simulateRealTimeUpdate();
+    </script>
+</body>
+</html>

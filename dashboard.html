@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Project Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #1e5631 0%, #2d7a4a 25%, #3d9960 50%, #5cb85c 75%, #87ceeb 100%);
+            position: relative;
+        }
+
+        /* Animated Environmental Background */
+        .env-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* Animated Leaves */
+        .leaf {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #90EE90, #228B22);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            opacity: 0.2;
+            animation: fall-leaf linear infinite;
+        }
+
+        .leaf:nth-child(1) { left: 5%; animation-duration: 12s; animation-delay: 0s; }
+        .leaf:nth-child(2) { left: 15%; animation-duration: 15s; animation-delay: 2s; }
+        .leaf:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: 4s; }
+        .leaf:nth-child(4) { left: 35%; animation-duration: 14s; animation-delay: 1s; }
+        .leaf:nth-child(5) { left: 45%; animation-duration: 11s; animation-delay: 3s; }
+        .leaf:nth-child(6) { left: 55%; animation-duration: 13s; animation-delay: 5s; }
+        .leaf:nth-child(7) { left: 65%; animation-duration: 16s; animation-delay: 2s; }
+        .leaf:nth-child(8) { left: 75%; animation-duration: 12s; animation-delay: 4s; }
+        .leaf:nth-child(9) { left: 85%; animation-duration: 14s; animation-delay: 1s; }
+        .leaf:nth-child(10) { left: 95%; animation-duration: 11s; animation-delay: 3s; }
+
+        @keyframes fall-leaf {
+            0% {
+                top: -10%;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                top: 110%;
+                transform: translateX(100px) rotate(360deg);
+            }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float-particle 20s linear infinite;
+        }
+
+        .particle:nth-child(11) { left: 10%; animation-duration: 18s; animation-delay: 0s; }
+        .particle:nth-child(12) { left: 30%; animation-duration: 22s; animation-delay: 3s; }
+        .particle:nth-child(13) { left: 50%; animation-duration: 20s; animation-delay: 1s; }
+        .particle:nth-child(14) { left: 70%; animation-duration: 19s; animation-delay: 4s; }
+        .particle:nth-child(15) { left: 90%; animation-duration: 21s; animation-delay: 2s; }
+
+        @keyframes float-particle {
+            0% {
+                bottom: -10%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 110%;
+                opacity: 0;
+            }
+        }
+
+        /* Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(144, 238, 144, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(34, 139, 34, 0.1) 0%, transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left h1 {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .welcome-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .notification-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .bell-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            animation: pulse-badge 2s infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .create-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .create-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+        }
+
+        /* Workflow Tracker */
+        .workflow-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .workflow-tracker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .workflow-line {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: 1;
+        }
+
+        .workflow-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 60%;
+            transition: width 1s ease-in-out;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .workflow-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+
+        .workflow-circle {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all 0.3s;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .workflow-step.active .workflow-circle {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-color: white;
+            animation: pulse-circle 2s infinite;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+
+        .workflow-step.completed .workflow-circle {
+            background: #4CAF50;
+            border-color: white;
+        }
+
+        @keyframes pulse-circle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .workflow-label {
+            color: white;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1em;
+            margin-bottom: 20px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-box:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        td {
+            padding: 15px;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        tbody tr {
+            transition: background 0.3s;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: #FFC107;
+            color: #333;
+        }
+
+        .status-scrutiny {
+            background: #2196F3;
+            color: white;
+        }
+
+        .status-approved {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-rejected {
+            background: #f44336;
+            color: white;
+        }
+
+        /* Notifications Panel */
+        .notifications-panel {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4CAF50;
+            transition: all 0.3s;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .notification-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .notification-time {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85em;
+        }
+
+        /* Modal/Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 1.8em;
+            color: #2d7a4a;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #f44336;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #2d7a4a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                text-align: center;
+            }
+
+            .header-left h1 {
+                font-size: 1.5em;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .workflow-tracker {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .workflow-line {
+                display: none;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+            z-index: 2000;
+            display: none;
+            animation: slideInRight 0.5s;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Environmental Background -->
+    <div class="env-background">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    <div class="gradient-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🌿 Parivesh 3.0 User Dashboard</h1>
+                <p class="welcome-text">Welcome back,
+                </p>
+            </div>
+            <div class="header-right">
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    <div class="bell-icon">🔔</div>
+                    <span class="notification-badge" id="notif-count">3</span>
+                </div>
+                <button class="create-btn" onclick="openModal()">
+                    ➕ Create New Application
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="total-count">12</div>
+                <div class="stat-label">Total Applications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-value" id="pending-count">4</div>
+                <div class="stat-label">Pending Applications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-value" id="scrutiny-count">5</div>
+                <div class="stat-label">Under Scrutiny</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="approved-count">3</div>
+                <div class="stat-label">Approved Projects</div>
+            </div>
+        </div>
+
+        <!-- Workflow Tracker -->
+        <div class="workflow-section">
+            <h2 class="section-title">Application Workflow</h2>
+            <div class="workflow-tracker">
+                <div class="workflow-line">
+                    <div class="workflow-progress" id="workflow-progress"></div>
+                </div>
+                <div class="workflow-step completed">
+                    <div class="workflow-circle">📝</div>
+                    <div class="workflow-label">Draft</div>
+                </div>
+                <div class="workflow-step completed">
+                    <div class="workflow-circle">📤</div>
+                    <div class="workflow-label">Submitted</div>
+                </div>
+                <div class="workflow-step active">
+                    <div class="workflow-circle">🔍</div>
+                    <div class="workflow-label">Scrutiny</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-circle">👥</div>
+                    <div class="workflow-label">Meeting</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-circle">⚖️</div>
+                    <div class="workflow-label">Decision</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Application Table -->
+            <div class="table-section">
+                <h2 class="section-title">Application Summary</h2>
+                <input type="text" class="search-box" id="search-box" placeholder="🔍 Search by project name..." onkeyup="searchApplications()">
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Application ID</th>
+                                <th>Project Name</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applications-table">
+                            <!-- Dynamic content will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Notifications Panel -->
+            <div class="notifications-panel">
+                <h2 class="section-title">Recent Notifications</h2>
+                <div id="notifications-list">
+                    <!-- Dynamic notifications will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Create New Application -->
+    <div class="modal" id="create-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+           
+            <button onclick="openModal()"
+            class="app-btn">
+                <h2 class="modal-title">Application Submission</h2>
+                <a href="application.html" class="app-btn">
+                    CLICK HERE
+                </a>
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="success-message">
+        ✅ Application created successfully!
+    </div>
+
+    <script>
+        // Sample data for applications
+        let applications = [
+            { id: 'APP-001', name: 'Solar Farm Installation', date: '2026-03-10', status: 'Approved' },
+            { id: 'APP-002', name: 'Rainwater Harvesting System', date: '2026-03-08', status: 'Under Scrutiny' },
+            { id: 'APP-003', name: 'Organic Waste Composting', date: '2026-03-05', status: 'Pending' },
+            { id: 'APP-004', name: 'Urban Tree Plantation Drive', date: '2026-03-12', status: 'Approved' },
+            { id: 'APP-005', name: 'Biodegradable Packaging Unit', date: '2026-03-07', status: 'Under Scrutiny' },
+            { id: 'APP-006', name: 'Green Roof Implementation', date: '2026-03-11', status: 'Pending' },
+            { id: 'APP-007', name: 'Wind Energy Project', date: '2026-03-09', status: 'Approved' },
+            { id: 'APP-008', name: 'Wetland Restoration', date: '2026-03-06', status: 'Under Scrutiny' },
+            { id: 'APP-009', name: 'E-Waste Recycling Center', date: '2026-03-13', status: 'Pending' },
+            { id: 'APP-010', name: 'Community Garden Initiative', date: '2026-03-04', status: 'Under Scrutiny' },
+            { id: 'APP-011', name: 'Plastic-Free Campaign', date: '2026-03-03', status: 'Under Scrutiny' },
+            { id: 'APP-012', name: 'Eco-Tourism Development', date: '2026-03-02', status: 'Pending' }
+        ];
+
+        // Sample notifications
+        let notifications = [
+            { title: 'Application APP-002 moved to scrutiny', time: '2 hours ago' },
+            { title: 'Meeting scheduled for APP-001', time: '5 hours ago' },
+            { title: 'Document upload required for APP-006', time: '1 day ago' }
+        ];
+
+        // Initialize dashboard
+        function initDashboard() {
+            renderApplicationsTable();
+            renderNotifications();
+            updateStats();
+        }
+
+        // Render applications table
+        function renderApplicationsTable() {
+            const tableBody = document.getElementById('applications-table');
+            tableBody.innerHTML = '';
+
+            applications.forEach(app => {
+                const row = document.createElement('tr');
+                
+                let statusClass = '';
+                if (app.status === 'Pending') statusClass = 'status-pending';
+                else if (app.status === 'Under Scrutiny') statusClass = 'status-scrutiny';
+                else if (app.status === 'Approved') statusClass = 'status-approved';
+                else if (app.status === 'Rejected') statusClass = 'status-rejected';
+
+                row.innerHTML = `
+                    <td>${app.id}</td>
+                    <td>${app.name}</td>
+                    <td>${app.date}</td>
+                    <td><span class="status-badge ${statusClass}">${app.status}</span></td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Render notifications
+        function renderNotifications() {
+            const notificationsList = document.getElementById('notifications-list');
+            notificationsList.innerHTML = '';
+
+            notifications.forEach((notif, index) => {
+                const notifDiv = document.createElement('div');
+                notifDiv.className = 'notification-item';
+                notifDiv.style.animationDelay = `${index * 0.1}s`;
+                notifDiv.innerHTML = `
+                    <div class="notification-title">${notif.title}</div>
+                    <div class="notification-time">${notif.time}</div>
+                `;
+                notificationsList.appendChild(notifDiv);
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = applications.length;
+            const pending = applications.filter(app => app.status === 'Pending').length;
+            const scrutiny = applications.filter(app => app.status === 'Under Scrutiny').length;
+            const approved = applications.filter(app => app.status === 'Approved').length;
+
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('pending-count').textContent = pending;
+            document.getElementById('scrutiny-count').textContent = scrutiny;
+            document.getElementById('approved-count').textContent = approved;
+        }
+
+        // Search applications
+        function searchApplications() {
+            const searchTerm = document.getElementById('search-box').value.toLowerCase();
+            const tableBody = document.getElementById('applications-table');
+            const rows = tableBody.getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const projectName = row.cells[1].textContent.toLowerCase();
+                if (projectName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('create-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('create-modal').classList.remove('active');
+            document.getElementById('application-form').reset();
+        }
+
+        // Submit new application
+        function submitApplication(event) {
+            event.preventDefault();
+
+            const projectName = document.getElementById('project-name').value;
+            const projectDescription = document.getElementById('project-description').value;
+            const projectCategory = document.getElementById('project-category').value;
+
+            // Generate new application ID
+            const newId = `APP-${String(applications.length + 1).padStart(3, '0')}`;
+            
+            // Get current date
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+
+            // Create new application object
+            const newApplication = {
+                id: newId,
+                name: projectName,
+                date: dateString,
+                status: 'Pending'
+            };
+
+            // Add to applications array
+            applications.unshift(newApplication);
+
+            // Add notification
+            notifications.unshift({
+                title: `New application ${newId} created: ${projectName}`,
+                time: 'Just now'
+            });
+
+            // Update notification count
+            const notifCount = document.getElementById('notif-count');
+            notifCount.textContent = parseInt(notifCount.textContent) + 1;
+
+            // Update UI
+            renderApplicationsTable();
+            renderNotifications();
+            updateStats();
+
+            // Close modal
+            closeModal();
+
+            // Show success message
+            const successMsg = document.getElementById('success-message');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+
+            // Simulate workflow progress animation
+            simulateWorkflowProgress();
+        }
+
+        // Toggle notifications (could expand this to show/hide a panel)
+        function toggleNotifications() {
+            alert('Notifications:\n\n' + notifications.map(n => `• ${n.title} (${n.time})`).join('\n'));
+        }
+
+        // Simulate workflow progress
+        function simulateWorkflowProgress() {
+            const progress = document.getElementById('workflow-progress');
+            let currentWidth = 0;
+            const targetWidth = 60;
+            
+            const interval = setInterval(() => {
+                if (currentWidth >= targetWidth) {
+                    clearInterval(interval);
+                } else {
+                    currentWidth += 2;
+                    progress.style.width = currentWidth + '%';
+                }
+            }, 30);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('create-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize dashboard on load
+        window.onload = function() {
+            initDashboard();
+            setTimeout(() => {
+                simulateWorkflowProgress();
+            }, 1000);
+        };
+    </script>
+    <script>
+    function openModal(){
+    document.getElementById("create-modal").style.display = "block";
+}
+    function closeModal(){
+    document.getElementById("create-modal").style.display = "none";
+}
+</script>
+</body>
+</html>
